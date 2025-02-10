@@ -5,9 +5,18 @@ import { Link } from "react-router-dom";
 import { SignedIn } from "@clerk/clerk-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import PlaylistSkeleton from "@/components/skeletons/PlaylistSkeleton";
+import { useMusicStore } from "@/store/useMusicStore";
+import { useEffect } from "react";
 
 const LeftSidebar = () => {
-  const isLoading = true;
+  const { albums, fetchAlbums, isLoading } = useMusicStore();
+
+  useEffect(() => {
+    fetchAlbums();
+  }, [fetchAlbums]);
+
+  console.log({ albums });
+
   return (
     <div className="h-full flex flex-col gap-2">
       {/* Navigation menu */}
