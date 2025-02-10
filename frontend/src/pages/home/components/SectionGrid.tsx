@@ -37,6 +37,7 @@ const SectionGrid = ({ songs, title, isLoading }: SectionGridProps) => {
                   className="w-full h-full object-cover transition-transform duration-300 
 									group-hover:scale-105"
                 />
+                {/* Todo Play button */}
               </div>
             </div>
             <h3 className="font-medium mb-2 truncate">{song.title}</h3>
