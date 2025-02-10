@@ -7,9 +7,21 @@ import { Outlet } from "react-router-dom";
 import LeftSidebar from "./components/LeftSidebar";
 import FriendsActivity from "./components/FriendsActivity";
 import AudioPlayer from "./components/AudioPlayer";
+import PlaybackControls from "./components/PlaybackControls";
+import { useEffect, useState } from "react";
 
 const MainLayout = () => {
-  const isMobile = false;
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const chekMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    chekMobile();
+    window.addEventListener("resize", chekMobile);
+    return () => window.removeEventListener("resize", chekMobile);
+  }, []);
+
   return (
     <div className="h-screen bg-black text-white flex flex-col">
       <ResizablePanelGroup
@@ -33,18 +45,23 @@ const MainLayout = () => {
           <Outlet />
         </ResizablePanel>
 
-        <ResizableHandle className="w-2 bg-black rounded-lg transition-colors" />
+        {!isMobile && (
+          <>
+            <ResizableHandle className="w-2 bg-black rounded-lg transition-colors" />
 
-        {/* Right sidebar */}
-        <ResizablePanel
-          defaultSize={20}
-          minSize={0}
-          maxSize={25}
-          collapsedSize={0}
-        >
-          <FriendsActivity />
-        </ResizablePanel>
+            {/* right sidebar */}
+            <ResizablePanel
+              defaultSize={20}
+              minSize={0}
+              maxSize={25}
+              collapsedSize={0}
+            >
+              <FriendsActivity />
+            </ResizablePanel>
+          </>
+        )}
       </ResizablePanelGroup>
+      <PlaybackControls />
     </div>
   );
 };
