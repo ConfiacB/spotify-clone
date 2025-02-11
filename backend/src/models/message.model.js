@@ -2,22 +2,11 @@ import mongoose from "mongoose";
 
 const messageSchema = new mongoose.Schema(
   {
-    senderId: {
-      // clerk user id
-      type: string,
-      required: true,
-    },
-    receiverId: {
-      // clerk user id
-      type: string,
-      required: true,
-    },
-    content: {
-      type: string,
-      required: true,
-    },
+    senderId: { type: String, required: true }, // Clerk user ID
+    receiverId: { type: String, required: true }, // Clerk user ID
+    content: { type: String, required: true },
   },
-  { timestamps: true } // this will add createdAt and updatedAt fields
+  { timestamps: true }
 );
 
-export default mongoose.model("Message", messageSchema);
+export const Message = mongoose.model("Message", messageSchema);
