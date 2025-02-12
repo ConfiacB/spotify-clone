@@ -3,7 +3,7 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { useChatStore } from "@/store/useChatStore";
 import { useAuth } from "@clerk/clerk-react";
 import { Loader } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const updateApiToken = (token: string | null) => {
   if (token)
@@ -48,7 +48,6 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       </div>
     );
 
-  return <div>{children}</div>;
+  return <>{children}</>;
 };
-
 export default AuthProvider;
