@@ -22,7 +22,8 @@ interface ChatStore {
   setSelectedUser: (user: User | null) => void;
 }
 
-const baseURL = "http://localhost:5000";
+const baseURL =
+  import.meta.env.MODE === "development" ? "http://localhost:5000" : "/";
 
 const socket = io(baseURL, {
   autoConnect: false, // only connect if user is authenticated
@@ -33,16 +34,14 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   users: [],
   isLoading: false,
   error: null,
-  socket: null,
+  socket: socket,
   isConnected: false,
   onlineUsers: new Set(),
   userActivities: new Map(),
   messages: [],
   selectedUser: null,
 
-  setSelectedUser: (user) => {
-    set({ selectedUser: user });
-  },
+  setSelectedUser: (user) => set({ selectedUser: user }),
 
   fetchUsers: async () => {
     set({ isLoading: true, error: null });
@@ -109,21 +108,21 @@ export const useChatStore = create<ChatStore>((set, get) => ({
     }
   },
 
-  disconnectSocket() {
+  disconnectSocket: () => {
     if (get().isConnected) {
       socket.disconnect();
       set({ isConnected: false });
     }
   },
 
-  sendMessage(receiverId, senderId, content) {
+  sendMessage: async (receiverId, senderId, content) => {
     const socket = get().socket;
     if (!socket) return;
 
     socket.emit("send_message", { receiverId, senderId, content });
   },
 
-  fetchMessages: async (userId) => {
+  fetchMessages: async (userId: string) => {
     set({ isLoading: true, error: null });
     try {
       const response = await axiosInstance.get(`/users/messages/${userId}`);
